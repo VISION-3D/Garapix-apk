@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Caméra</title>
+</head>
+<body>
+  <h2>Test Caméra Simple</h2>
+  <video id="video" autoplay playsinline style="width:100%; max-width:600px; background:black;"></video>
+  <br>
+  <button id="start">Activer la caméra</button>
+  <button id="stop" disabled>Arrêter</button>
+  <p id="status"></p>
+
+  <script>
+    const video = document.getElementById('video');
+    const startBtn = document.getElementById('start');
+    const stopBtn = document.getElementById('stop');
+    const status = document.getElementById('status');
+    let currentStream = null;
+
+    startBtn.onclick = async () => {
+      try {
+        status.textContent = 'Demande d\'accès...';
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        currentStream = stream;
+        status.textContent = '✅ Caméra active';
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      } catch (err) {
+        status.textContent = '❌ Erreur : ' + err.message;
+        console.error(err);
+      }
+    };
+
+    stopBtn.onclick = () => {
+      if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        currentStream = null;
+        status.textContent = 'Caméra arrêtée';
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+      }
+    };
+  </script>
+</body>
+</html>
