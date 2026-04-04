@@ -1,0 +1,5 @@
+{
+  "appId": "com.garapix.app",
+  "appName": "GarapiX",
+  "webDir": "garapix-frontend/build"
+}
