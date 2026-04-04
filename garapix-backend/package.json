@@ -1,0 +1,30 @@
+{
+  "name": "garapix-backend",
+  "version": "2.0.0",
+  "description": "Backend professionnel pour l'identification des maladies des plantes",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "seed": "node src/scripts/seedDatabase.js"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.5.0",
+    "axios": "^1.13.5",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "form-data": "^4.0.5",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^7.8.9",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.32.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22"
+  }
+}

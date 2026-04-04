@@ -1,0 +1,488 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  flex-wrap: wrap;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  margin: 0.5rem 0;
+}
+
+.search-container {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 0 0.5rem;
+}
+
+.search-input-wrapper .search-icon {
+  color: #28a745; /* icône verte */
+  margin-right: 1.3rem;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 0.5rem;
+  background: transparent;
+}
+
+.search-button {
+  margin-left: 0.5rem;
+  padding: 1rem 1rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background: #218838;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.header-right button,
+.user-menu-container {
+  flex-shrink: 0;
+  color: #28a745; /* toutes les icônes vertes */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+.header-right button:hover {
+  color: #218838;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: red;
+  color: white;
+  font-size: 0.7rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-dropdown {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 2000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.notification-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: #f9f9f9;
+}
+
+.user-menu-container {
+  position: relative;
+}
+
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 2000;
+  min-width: 180px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.user-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #28a745;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+@media (max-width: 480px) {
+  .logo-text { display: none; }
+  .header-center { order: 3; width: 100%; justify-content: flex-start; margin: 0.5rem 0; }
+  .search-container { display: none; }
+  .search-btn-mobile { display: block; font-size: 1.5rem; color: #28a745; cursor: pointer; }
+  .header-right { order: 2; width: auto; justify-content: flex-end; gap: 0.3rem; }
+}
+/* Conteneur input + icône */
+.search-input-wrapper {
+  
+  position: relative;          /* pour positionner l'icône à l'intérieur */
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;            /* largeur max du champ */
+  background: #f0f0f0;
+  border-radius: 4px;
+  height: 40px;
+}
+
+/* Icône search à gauche */
+.search-input-wrapper .search-icon {
+  position: absolute;          /* position absolue dans le conteneur */
+  left: 10px;                  /* distance du bord gauche */
+  color: #28a745;              /* couleur verte */
+  font-size: 1.2rem;
+  pointer-events: none;        /* l'icône ne bloque pas le clic dans l'input */
+}
+
+/* Champ de recherche */
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0 0.75rem 0 2rem;   /* padding gauche pour laisser l'icône */
+  font-size: 0.95rem;
+  background: transparent;
+}
+/* Mode sombre global */
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+/* Exemple pour header en mode sombre */
+body.dark-mode .app-header {
+  background-color: #171515a2;
+}
+/* Conteneur de recherche */
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* largeur max de la barre de recherche */
+  margin: 0 auto;
+}
+
+/* Wrapper input + icône */
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-input-wrapper .search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #28a745; /* icône verte */
+  font-size: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px 8px 35px; /* espace pour icône à gauche */
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px; /* arrondi gauche seulement */
+  font-size: 0.9rem;
+  outline: none;
+}
+
+/* Bouton de recherche */
+.search-button {
+  padding: 8px 12px;
+  border: 1px solid #28a745; /* cadre blanc ou vert */
+  border-left: none; /* pas de double bordure avec input */
+  background-color: #28a745; /* vert */
+  color: #fff;
+  border-radius: 4 4px 4px 4; /* arrondi droit seulement */
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background-color: #1e7e34; /* vert plus foncé au hover */
+}
+
+body.dark-mode .search-input {
+  background-color: #2c2c2c;
+  color: #f0f0f0;
+}
+
+body.dark-mode .search-input::placeholder {
+  color: #cccccc;
+}
+/* ================= HEADER ================= */
+
+.app-header {
+  display: flex;
+  align-items: center;              /* ALIGNEMENT GLOBAL */
+  justify-content: space-between;
+  height: 72px;                     /* hauteur FIXE */
+  padding: 0 16px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  position: relative;
+  z-index: 1000;
+}
+
+/* LEFT */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+
+/* RECHERCHE */
+.search-container {
+  display: flex;
+  align-items: center;
+  max-width: 420px;
+  width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background: #f2f2f2;
+  border-radius: 4px 0 0 6px;
+
+  
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: #28a745;
+}
+
+.search-input {
+  width: 100%;
+  height: 100%;
+  padding: 0 12px 0 36px;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+/* BOUTON */
+.search-button {
+  height: 40px;
+  padding: 0 16px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4 4px 4px 0;
+  cursor: pointer;
+}
+
+/* RIGHT */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-right button {
+  background: none;
+  border: none;
+  color: #28a745;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+/* ================= NOTIFICATIONS ================= */
+
+.notification-dropdown {
+  position: absolute;
+  right: 0;
+  top: 56px;
+  width: 320px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  overflow: hidden;
+  z-index: 3000;
+}
+
+/* Header */
+.notification-header {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f7f7f7;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Liste */
+.notification-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/* Item */
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.notification-item:hover {
+  background: #f3f3f3;
+}
+
+.notification-item.unread {
+  background: #e9f6ec;
+}
+
+/* Contenu */
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.notification-message {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* Bouton delete */
+.delete-notification {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #999;
+  cursor: pointer;
+}
+
+.delete-notification:hover {
+  color: #d9534f;
+}
+
+/* Footer */
+.notification-footer {
+  padding: 10px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.notification-footer button {
+  background: none;
+  border: none;
+  color: #28a745;
+  cursor: pointer;
+  font-weight: 600;
+}
+/* Conteneur logo */
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.logo-img {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  animation: logoPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(76, 175, 80, 0));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.35));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(76, 175, 80, 0));
+  }
+}
+
+
