@@ -1,0 +1,352 @@
+/* src/components/BackButton.css */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-decoration: none;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.back-button:active {
+  transform: translateY(0);
+}
+
+.back-button-icon {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button-text {
+  font-weight: 500;
+}
+
+/* Variante Primaire */
+.back-btn-primary {
+  background: linear-gradient(135deg, #2e7d32, #1b5e20);
+  color: white;
+  border: 2px solid transparent;
+}
+
+.back-btn-primary:hover {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  box-shadow: 0 6px 20px rgba(43, 108, 176, 0.3);
+}
+
+/* Variante Secondaire */
+.back-btn-secondary {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 2px solid #e0e0e0;
+}
+
+.back-btn-secondary:hover {
+  background-color: #e8e8e8;
+  border-color: #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Variante Outline */
+.back-btn-outline {
+  background-color: transparent;
+  color: #2e7d32;
+  border: 2px solid #2e7d32;
+}
+
+.back-btn-outline:hover {
+  background-color: rgba(46, 125, 50, 0.1);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+}
+
+/* Variante Texte */
+.back-btn-text {
+  background-color: transparent;
+  color: #2e7d32;
+  border: none;
+  padding: 8px 12px;
+  min-width: auto;
+}
+
+.back-btn-text:hover {
+  background-color: rgba(46, 125, 50, 0.1);
+  box-shadow: none;
+  transform: translateX(-4px);
+}
+
+/* Bouton avec ombre */
+.back-button.shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Bouton arrondi */
+.back-button.rounded {
+  border-radius: 25px;
+  padding: 10px 20px;
+}
+
+/* Bouton petit */
+.back-button.small {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  min-width: 80px;
+}
+
+.back-button.small .back-button-icon {
+  font-size: 0.9rem;
+}
+
+/* Bouton grand */
+.back-button.large {
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  min-width: 120px;
+}
+
+.back-button.large .back-button-icon {
+  font-size: 1.3rem;
+}
+
+/* Bouton plein largeur */
+.back-button.full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Animation de pulse au survol */
+.back-button.pulse:hover {
+  animation: pulse 0.6s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+/* Bouton avec effet de glissement */
+.back-button.slide {
+  position: relative;
+  overflow: hidden;
+}
+
+.back-button.slide::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.back-button.slide:hover::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Bouton avec icône seulement */
+.back-button.icon-only {
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  justify-content: center;
+}
+
+.back-button.icon-only .back-button-text {
+  display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .back-button {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  
+  .back-button.mobile-hidden {
+    display: none;
+  }
+  
+  .back-button.mobile-icon-only .back-button-text {
+    display: none;
+  }
+  
+  .back-button.mobile-icon-only {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 50%;
+  }
+}
+
+/* Accessibilité */
+.back-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.4);
+}
+
+.back-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.back-button:disabled:hover {
+  box-shadow: none;
+}
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(46, 125, 50, 0.2);
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  padding: 8px 0 4px;
+  border-radius: 20px 20px 0 0;
+}
+
+.nav-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #757575;
+  padding: 6px 12px;
+  border-radius: 30px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(46, 125, 50, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: -1;
+}
+
+.nav-item:hover::before,
+.nav-item.active::before {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+}
+
+.nav-item.active {
+  color: #2e7d32;
+  font-weight: 500;
+  background: rgba(46, 125, 50, 0.05);
+}
+
+.nav-icon {
+  font-size: 1.4rem;
+  margin-bottom: 2px;
+  transition: transform 0.2s ease;
+}
+
+.nav-item:hover .nav-icon,
+.nav-item.active .nav-icon {
+  transform: translateY(-2px);
+}
+
+.nav-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+/* Effet spécial pour le bouton de déconnexion */
+.nav-item:last-child {
+  color: #d32f2f;
+}
+
+.nav-item:last-child.active {
+  color: #b71c1c;
+  background: rgba(211, 47, 47, 0.05);
+}
+
+.nav-item:last-child::before {
+  background: rgba(211, 47, 47, 0.1);
+}
+
+/* Animation d'entrée */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.bottom-nav {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Adaptation pour très petits écrans */
+@media (max-width: 360px) {
+  .nav-label {
+    font-size: 0.6rem;
+  }
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+}

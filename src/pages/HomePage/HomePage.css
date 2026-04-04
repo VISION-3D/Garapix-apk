@@ -1,0 +1,139 @@
+.home-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+}
+
+/* Suppression du fond blanc de hero-section */
+.hero-section {
+  text-align: center;
+  /* background: rgba(255, 255, 255, 0.9);  supprimé */
+  padding: 40px 60px;
+  border-radius: 24px;
+  /* box-shadow: 0 15px 35px rgba(0, 40, 0, 0.3); supprimé */
+  max-width: 500px;
+  width: 90%;
+  color: white; /* Texte en blanc pour contraster sur l'image */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Ombre pour lisibilité */
+}
+
+/* Logo et cercle inchangés */
+.logo-circle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+
+
+@keyframes pulseGlow {
+  0% {
+    transform: scale(1);
+    border-color: rgba(46, 125, 50, 0.8);
+    box-shadow: 0 0 20px 8px rgba(46, 125, 50, 0.5);
+  }
+  50% {
+    transform: scale(1.15);
+    border-color: rgba(46, 125, 50, 0.5);
+    box-shadow: 0 0 40px 15px rgba(46, 125, 50, 0.7);
+  }
+  100% {
+    transform: scale(1);
+    border-color: rgba(46, 125, 50, 0.8);
+    box-shadow: 0 0 20px 8px rgba(46, 125, 50, 0.5);
+  }
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  /* color: #2c3e50; changé pour hériter du blanc */
+  line-height: 1.5;
+}
+
+.start-btn {
+  padding: 14px 40px;
+  font-size: 1.2rem;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+}
+
+.start-btn:hover {
+  background: #1b5e20;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(46, 125, 50, 0.5);
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 30px 30px;
+  }
+  .logo-circle {
+    width: 150px;
+    height: 150px;
+  }
+  .hero-section p {
+    font-size: 1rem;
+  }
+}
+
+.home-page {
+  position: relative; /* pour que les éléments absolus soient positionnés par rapport à lui */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.hero-section {
+  position: relative;
+  z-index: 2; /* au-dessus des particules */
+  text-align: center;
+  padding: 40px 40px;
+  max-width: 500px;
+  width: 90%;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* ... le reste du CSS ... */
+.hero-logo-text {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  margin-bottom: 20px;
+}
+.orange-x {
+  color: #ff8c42;
+}

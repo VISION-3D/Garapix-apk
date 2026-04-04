@@ -1,0 +1,14 @@
+/* src/components/Layout.css */
+.main-content {
+  margin-left: 200px; /* Largeur de la sidebar */
+  padding-top: 70px;  /* Hauteur de la barre de recherche */
+  min-height: 100vh;
+  background: #f9fafc;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
