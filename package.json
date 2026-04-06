@@ -1,5 +1,26 @@
 {
-  "name": "garapix-monorepo",
+  "name": "garapix",
   "version": "1.0.0",
-  "description": "GarapiX - Application de diagnostic des plantes"
+  "description": "GarapiX - Application de diagnostic des plantes",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  }
 }
