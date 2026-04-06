@@ -1,5 +1,6 @@
 {
   "buildCommand": "cd garapix-frontend && npm install && npm run build",
-  "outputDirectory": "garapix-frontend/build",
-  "installCommand": "cd garapix-frontend && npm install"
+  "outputDirectory": "build",
+  "installCommand": "cd garapix-frontend && npm install",
+  "framework": "create-react-app"
 }
