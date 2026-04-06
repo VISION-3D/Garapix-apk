@@ -1,6 +1,19 @@
 {
   "buildCommand": "cd garapix-frontend && npm install && npm run build",
-  "outputDirectory": "build",
+  "outputDirectory": "garapix-frontend/build",
   "installCommand": "cd garapix-frontend && npm install",
-  "framework": "create-react-app"
+  "framework": "create-react-app",
+  "devCommand": "cd garapix-frontend && npm start",
+  "builds": [
+    {
+      "src": "garapix-frontend/package.json",
+      "use": "@vercel/static-build"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/garapix-frontend/build/$1"
+    }
+  ]
 }
