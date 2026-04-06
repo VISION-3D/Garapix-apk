@@ -20,7 +20,7 @@
     "eslint": "^8.57.1"
   },
   "engines": {
-    "node": "18.x",
+    "node": "24.x",
     "npm": "9.x"
   }
 }
