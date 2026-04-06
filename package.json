@@ -1,47 +1,5 @@
 {
-<<<<<<< HEAD
-  "dependencies": {
-    "@capacitor/android": "^8.1.0",
-    "@capacitor/camera": "^8.0.2",
-    "@capacitor/cli": "^8.1.0",
-    "@capacitor/core": "^8.1.0",
-    "@ngrok/ngrok": "^1.7.0"
-=======
-  "name": "garapix-frontend",
+  "name": "garapix-monorepo",
   "version": "1.0.0",
-  "private": true,
-  "proxy": "http://localhost:5000",
-  "dependencies": {
-    "@capacitor/camera": "^8.0.1",
-    "axios": "^1.13.4",
-    "chart.js": "^4.2.1",
-    "date-fns": "^4.1.0",
-    "lucide-react": "^0.575.0",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0",
-    "react-hot-toast": "^2.6.0",
-    "react-icons": "^4.12.0",
-    "react-router-dom": "^6.8.0",
-    "react-scripts": "^5.0.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
->>>>>>> 7bfdbebc2f1a6928ab5cf6f2349f2f23b043164a
-  }
+  "description": "GarapiX - Application de diagnostic des plantes"
 }
