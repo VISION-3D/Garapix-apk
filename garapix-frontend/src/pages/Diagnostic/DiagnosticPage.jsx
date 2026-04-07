@@ -37,6 +37,8 @@ import {
   Sparkles
 } from "lucide-react";
 
+// 🔥 VARIABLE D'ENVIRONNEMENT - CORRECTION IMPORTANTE
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const DiagnosticReal = () => {
   // États principaux
   const [imageFile, setImageFile] = useState(null);
@@ -322,7 +324,7 @@ async function analysePlante(photoFile) {
 
       let identifyData = null;
       try {
-        const identifyRes = await fetch('http://localhost:5000/api/identify/plant', {
+        const identifyRes = await fetch(`${API_URL}/api/identify/plant`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ imageBase64: base64Image })
@@ -397,7 +399,7 @@ async function analysePlante(photoFile) {
       let plantDocResult = null;
       if (token && matchedPlant) {
         try {
-          const diagnoseRes = await fetch('http://localhost:5000/api/diagnose/plant', {
+          const diagnoseRes = await fetch(`${API_URL}/api/diagnose/plant`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
