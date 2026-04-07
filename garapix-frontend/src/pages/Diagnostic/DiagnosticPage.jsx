@@ -37,8 +37,8 @@ import {
   Sparkles
 } from "lucide-react";
 
-// 🔥 VARIABLE D'ENVIRONNEMENT - CORRECTION IMPORTANTE
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const url = `${API_URL}/api/identify/plant`;
 const DiagnosticReal = () => {
   // États principaux
   const [imageFile, setImageFile] = useState(null);
@@ -324,12 +324,12 @@ async function analysePlante(photoFile) {
 
       let identifyData = null;
       try {
-        const identifyRes = await fetch(`${API_URL}/api/identify/plant`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imageBase64: base64Image })
-        });
-
+    
+const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/plant', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ imageBase64: base64Image })
+});
         if (!identifyRes.ok) {
           throw new Error(`Erreur PlantNet (${identifyRes.status})`);
         }
@@ -399,7 +399,7 @@ async function analysePlante(photoFile) {
       let plantDocResult = null;
       if (token && matchedPlant) {
         try {
-          const diagnoseRes = await fetch(`${API_URL}/api/diagnose/plant`, {
+          const diagnoseRes = await fetch('http://localhost:5000/api/diagnose/plant', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

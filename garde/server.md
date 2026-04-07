@@ -273,3 +273,15 @@ app.listen(PORT, () => {
   console.log(`   POST /api/diagnose/plant (protégé)`);
   console.log(`   GET  /api/health`);
 });
+
+
+
+
+
+
+MONGO_URI=mongodb+srv://garapix_user:Garapix123@cluster0.uzxk9wa.mongodb.net/garapix?retryWrites=true&w=majority
+PORT=5000
+JWT_SECRET=garapixsecret
+NODE_ENV=development
+PLANTNET_API_KEY=2b10bVVlILNw5L7AndKoLh6fge
+PLANTNET_API_URL=https://my-api.plantnet.org/v2/identify/all

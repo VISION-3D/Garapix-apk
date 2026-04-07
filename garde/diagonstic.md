@@ -66,6 +66,26 @@ const DiagnosticReal = () => {
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
+
+  const API_KEY = "2b10bVVlILNw5L7AndKoLh6fge";
+
+async function analysePlante(photoFile) {
+  const url = `https://my-api.plantnet.org/v2/identify/all?api-key=${API_KEY}`;
+
+  const formData = new FormData();
+  formData.append("images", photoFile);
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await response.json();
+  console.log(data);
+
+  return data;
+}
+
   // Charger les statistiques au démarrage
   useEffect(() => {
     loadStats();
