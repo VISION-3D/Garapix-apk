@@ -36,9 +36,8 @@ import {
   X,
   Sparkles
 } from "lucide-react";
+import { useCamera } from '../hooks/useCamera';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-const url = `${API_URL}/api/identify/plant`;
 const DiagnosticReal = () => {
   // États principaux
   const [imageFile, setImageFile] = useState(null);
@@ -56,37 +55,15 @@ const DiagnosticReal = () => {
 
   // État de l'analyse
   const [analysisStep, setAnalysisStep] = useState('idle');
-  const [cameraActive, setCameraActive] = useState(false);
-  const [stream, setStream] = useState(null);
-  const [cameraError, setCameraError] = useState(null);
-  const [cameraPermission, setCameraPermission] = useState('prompt');
 
   // Résultats IA
   const [diagnosticIA, setDiagnosticIA] = useState(null);
+  const [cameraError, setCameraError] = useState(null);
 
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
-
-  const API_KEY = "2b10bVVlILNw5L7AndKoLh6fge";
-
-async function analysePlante(photoFile) {
-  const url = `https://my-api.plantnet.org/v2/identify/all?api-key=${API_KEY}`;
-
-  const formData = new FormData();
-  formData.append("images", photoFile);
-
-  const response = await fetch(url, {
-    method: "POST",
-    body: formData
-  });
-
-  const data = await response.json();
-  console.log(data);
-
-  return data;
-}
+  // Hook caméra Capacitor
+  const { takePhoto } = useCamera();
 
   // Charger les statistiques au démarrage
   useEffect(() => {
@@ -98,149 +75,59 @@ async function analysePlante(photoFile) {
     setStats(statsData);
   };
 
-  // Nettoyage de la caméra à la destruction du composant
-  useEffect(() => {
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    };
-  }, [stream]);
-
-  // Gestionnaire pour le chargement de la vidéo
-  useEffect(() => {
-    if (!cameraActive || !videoRef.current || !stream) return;
-
-    const videoElement = videoRef.current;
-    
-    videoElement.srcObject = stream;
-    videoElement.load();
-    
-    videoElement.onloadedmetadata = () => {
-      videoElement.play()
-        .then(() => {
-          console.log('✅ Vidéo en cours de lecture');
-          setCameraError(null);
-        })
-        .catch(err => {
-          console.error('❌ Erreur lecture vidéo:', err);
-          setCameraError('Impossible de lancer la vidéo. Vérifiez les permissions.');
-        });
-    };
-
-    videoElement.onerror = () => {
-      setCameraError('Erreur lors du chargement de la vidéo');
-    };
-
-    return () => {
-      videoElement.onloadedmetadata = null;
-      videoElement.onerror = null;
-    };
-  }, [cameraActive, stream]);
-
-  // ================= CAMÉRA =================
-  const initializeCamera = async () => {
+  // ================= GESTION PHOTO (Capacitor) =================
+  const handleTakePhoto = async () => {
+  try {
     setCameraError(null);
+    const image = await takePhoto();
     
-    try {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        setCameraError('Votre navigateur ne supporte pas l\'accès à la caméra.');
-        return;
+    console.log('Image retournée:', image);
+    
+    let file;
+    
+    // Gérer les différents formats retournés par Capacitor
+    if (image.base64String) {
+      // Convertir Base64 en Blob
+      const byteCharacters = atob(image.base64String);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-
-      // Vérifier l'état des permissions
-      if (navigator.permissions && navigator.permissions.query) {
-        try {
-          const permissionStatus = await navigator.permissions.query({ name: 'camera' });
-          setCameraPermission(permissionStatus.state);
-          
-          permissionStatus.onchange = () => {
-            setCameraPermission(permissionStatus.state);
-          };
-        } catch (err) {
-          console.log('API permissions non supportée pour la caméra');
-        }
-      }
-
-      // Arrêter tout stream existant
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        setStream(null);
-      }
-
-      // Essayer d'abord avec caméra arrière
-      let mediaStream;
-      try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: { ideal: 'environment' },
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          }
-        });
-      } catch (err) {
-        console.log('Caméra arrière non disponible, essai avec caméra par défaut');
-        mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      }
-
-      setStream(mediaStream);
-      setCameraActive(true);
-      setCameraPermission('granted');
-      setCameraError(null);
-      
-    } catch (error) {
-      console.error('Erreur caméra détaillée:', error);
-      setCameraActive(false);
-      
-      if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
-        setCameraError('Permission caméra refusée. Veuillez autoriser l\'accès dans les paramètres de votre navigateur.');
-        setCameraPermission('denied');
-      } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
-        setCameraError('Aucune caméra trouvée sur cet appareil.');
-      } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
-        setCameraError('La caméra est déjà utilisée par une autre application.');
-      } else if (error.name === 'OverconstrainedError') {
-        setCameraError('Configuration caméra non supportée. Essayez avec une autre application.');
-      } else {
-        setCameraError(`Erreur: ${error.message || 'Cause inconnue'}`);
-      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/jpeg' });
+      file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+      console.log('Fichier créé depuis base64, taille:', file.size);
+    } 
+    else if (image.dataUrl) {
+      // Convertir DataUrl en Blob
+      const response = await fetch(image.dataUrl);
+      const blob = await response.blob();
+      file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+      console.log('Fichier créé depuis dataUrl, taille:', file.size);
     }
-  };
-
-  const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      setStream(null);
+    else if (image.webPath) {
+      // Convertir webPath en Blob
+      const response = await fetch(image.webPath);
+      const blob = await response.blob();
+      file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+      console.log('Fichier créé depuis webPath, taille:', file.size);
     }
-    setCameraActive(false);
-    setCameraError(null);
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
-  };
-
-  const capturePhoto = () => {
-    if (!cameraActive || !videoRef.current || !videoRef.current.videoWidth) {
-      setCameraError('La caméra n\'est pas prête. Attendez un instant puis réessayez.');
-      return;
+    else {
+      throw new Error('Format d\'image non supporté');
     }
     
-    const canvas = canvasRef.current;
-    const video = videoRef.current;
-    
-    if (canvas && video) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      
-      canvas.toBlob((blob) => {
-        const file = new File([blob], 'capture.jpg', { type: 'image/jpeg' });
-        processImageFile(file);
-        stopCamera();
-      }, 'image/jpeg', 0.9);
+    if (file.size < 1000) {
+      throw new Error('L\'image est trop petite, réessayez');
     }
-  };
+    
+    processImageFile(file);
+    
+  } catch (error) {
+    console.error('Erreur caméra détaillée:', error);
+    setCameraError(error.message || 'Impossible d\'accéder à la caméra');
+    alert('Erreur: ' + error.message);
+  }
+};
 
   // ================= GESTION FICHIERS =================
   const handleImageChange = (e) => {
@@ -324,12 +211,12 @@ async function analysePlante(photoFile) {
 
       let identifyData = null;
       try {
-    
-const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/plant', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ imageBase64: base64Image })
-});
+        const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/plant', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: base64Image })
+        });
+        
         if (!identifyRes.ok) {
           throw new Error(`Erreur PlantNet (${identifyRes.status})`);
         }
@@ -452,7 +339,6 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
     setSearchQuery('');
     setDiagnosticIA(null);
     setAnalysisStep('idle');
-    stopCamera();
   };
 
   const renderExpandableSection = (title, icon, content, sectionKey) => {
@@ -497,7 +383,7 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
 
             {!preview ? (
               <div className="upload-options">
-                {/* Option caméra */}
+                {/* Option caméra - Version Capacitor */}
                 <div className="camera-option modern-card">
                   <h4>
                     <Smartphone size={18} />
@@ -507,54 +393,16 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
                   {cameraError && (
                     <div className="camera-error-message">
                       <p>❌ {cameraError}</p>
-                      {cameraPermission === 'denied' && (
-                        <p className="camera-error-help">
-                          Pour réinitialiser la permission, allez dans les paramètres de votre navigateur,
-                          section "Confidentialité et sécurité" , "Paramètres de site" , "Caméra",
-                          puis autorisez ce site.
-                        </p>
-                      )}
                     </div>
                   )}
 
-                  {!cameraActive ? (
-                    <button 
-                      className="btn-modern-primary" 
-                      onClick={initializeCamera}
-                      disabled={cameraPermission === 'denied' && !cameraError}
-                    >
-                      <Camera size={18} />
-                      {cameraPermission === 'denied' ? 'Permission refusée' : 'Activer la caméra'}
-                    </button>
-                  ) : (
-                    <div className="camera-active">
-                      <video
-                        ref={videoRef}
-                        className="camera-preview modern-preview"
-                        autoPlay
-                        playsInline
-                        muted
-                      />
-                      <canvas ref={canvasRef} style={{ display: 'none' }} />
-                      <div className="camera-controls">
-                        <button
-                          className="btn-modern-primary"
-                          onClick={capturePhoto}
-                          disabled={!stream}
-                        >
-                          <Camera size={18} />
-                          Capturer
-                        </button>
-                        <button
-                          className="btn-modern-outline"
-                          onClick={stopCamera}
-                        >
-                          <X size={18} />
-                          Annuler
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  <button 
+                    className="btn-modern-primary" 
+                    onClick={handleTakePhoto}
+                  >
+                    <Camera size={18} />
+                    Prendre une photo
+                  </button>
                 </div>
 
                 {/* Option upload */}
@@ -758,32 +606,45 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
           </div>
 
           <div className="results-content">
-            {!plantInfo ? (
-              <div className="welcome-message">
-                <h3 className="animated-text">Bienvenue dans Garapix</h3>
-                <p className="animated-text-delay">
-                  Identifiez vos plantes et accédez à une base de données complète 
-                  sur leurs caractéristiques, culture, maladies et traitements.
-                </p>
-                <div className="feature-list">
-                  <div className="feature">
-                    <FaCamera className="feature-icon" />
-                    <div><h5>Capture d'images</h5><p>Prenez des photos ou importez depuis votre appareil</p></div>
-                  </div>
-                  <div className="feature">
-                    <FaDatabase className="feature-icon" />
-                    <div><h5>Base de données exhaustive</h5><p>16 plantes détaillées avec toutes les informations</p></div>
-                  </div>
-                  <div className="feature">
-                    <FaShieldAlt className="feature-icon" />
-                    <div><h5>Diagnostic des maladies</h5><p>Identification et traitement des maladies courantes</p></div>
-                  </div>
-                  <div className="feature">
-                    <FaGraduationCap className="feature-icon" />
-                    <div><h5>Conseils de culture</h5><p>Instructions détaillées pour chaque plante</p></div>
-                  </div>
-                </div>
-              </div>
+  {!plantInfo ? (
+    <div className="welcome-message">
+      
+      <h3 className="animated-text">Bienvenue sur Garapix</h3>
+      <p className="animated-text-delay">
+        La solution intelligente pour identifier vos plantes et diagnostiquer leurs maladies en quelques secondes
+      </p>
+      <div className="feature-list">
+        <div className="feature">
+          <FaCamera className="feature-icon" />
+          <div>
+            <h5>📸 Scan intelligent</h5>
+            <p>Prenez une photo et laissez notre IA identifier instantanément votre plante</p>
+          </div>
+        </div>
+        <div className="feature">
+          <FaDatabase className="feature-icon" />
+          <div>
+            <h5>🌿 Encyclopédie vivante</h5>
+            <p>Plus de 25 espèces documentées avec fiches détaillées et mises à jour</p>
+          </div>
+        </div>
+        <div className="feature">
+          <FaShieldAlt className="feature-icon" />
+          <div>
+            <h5>🩺 Diagnostic précis</h5>
+            <p>Détectez plus de 90 pathologies et obtenez des traitements adaptés</p>
+          </div>
+        </div>
+        <div className="feature">
+          <FaGraduationCap className="feature-icon" />
+          <div>
+            <h5>🌱 Guide cultural</h5>
+            <p>Conseils experts pour cultiver et entretenir vos plantes comme un professionnel</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
             ) : (
               <div className="plant-summary">
                 <div className="summary-header">
@@ -814,7 +675,6 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
 
             {activeTab === 'details' && plantInfo && (
               <div className="details-tab">
-                {/* Contenu détaillé – identique à avant */}
                 <div className="plant-header">
                   <div className="plant-title">
                     <h2>{plantInfo.nomCommun}</h2>
@@ -829,7 +689,7 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
                 </div>
 
                 {renderExpandableSection(
-                 "Caractéristiques",
+                  "Caractéristiques",
                   <FaTree />,
                   <div className="characteristics-grid">
                     <div className="char-item"><strong>Hauteur:</strong> <span>{plantInfo.caracteristiques?.hauteur}</span></div>
@@ -843,9 +703,58 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
                   "characteristics"
                 )}
 
-               
+                {plantInfo.valeurNutritionnelle && renderExpandableSection(
+                  "Valeur Nutritionnelle",
+                  <FaAppleAlt />,
+                  <div className="nutrition-grid">
+                    <div className="nutri-item"><strong>Calories:</strong> <span>{plantInfo.valeurNutritionnelle.calories}</span></div>
+                    {plantInfo.valeurNutritionnelle.vitamines && <div className="nutri-item"><strong>Vitamines:</strong> <span>{plantInfo.valeurNutritionnelle.vitamines}</span></div>}
+                    {plantInfo.valeurNutritionnelle.mineraux && <div className="nutri-item"><strong>Minéraux:</strong> <span>{plantInfo.valeurNutritionnelle.mineraux}</span></div>}
+                    {plantInfo.valeurNutritionnelle.fibres && <div className="nutri-item"><strong>Fibres:</strong> <span>{plantInfo.valeurNutritionnelle.fibres}</span></div>}
+                  </div>,
+                  "nutrition"
+                )}
+
+                {plantInfo.utilisations && renderExpandableSection(
+                  "Utilisations",
+                  <FaUtensils />,
+                  <ul className="uses-list">{plantInfo.utilisations.map((u,i) => <li key={i}>{u}</li>)}</ul>,
+                  "uses"
+                )}
+
+                {plantInfo.recolte && renderExpandableSection(
+                  "Récolte",
+                  <FaCalendarAlt />,
+                  <div className="harvest-info">
+                    <div className="harvest-item"><strong>Période:</strong> <span>{plantInfo.recolte.periode}</span></div>
+                    <div className="harvest-item"><strong>Signes:</strong> <span>{plantInfo.recolte.signes}</span></div>
+                    <div className="harvest-item"><strong>Conservation:</strong> <span>{plantInfo.recolte.conservation}</span></div>
+                    {plantInfo.recolte.rendement && <div className="harvest-item"><strong>Rendement:</strong> <span>{plantInfo.recolte.rendement}</span></div>}
+                  </div>,
+                  "harvest"
+                )}
+
+                {plantInfo.conseils && renderExpandableSection(
+                  "Conseils Pratiques",
+                  <FaInfoCircle />,
+                  <ul className="tips-list">{plantInfo.conseils.map((c,i) => <li key={i}>{c}</li>)}</ul>,
+                  "tips"
+                )}
+
+                {plantInfo.liensGoogle && renderExpandableSection(
+                  "Ressources Complémentaires",
+                  <FaExternalLinkAlt />,
+                  <div className="resources-list">
+                    {plantInfo.liensGoogle.map((link,i) => (
+                      <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="resource-link">
+                        <div className="resource-type">{link.type}</div>
+                        <div className="resource-title">{link.titre}</div>
+                        <FaExternalLinkAlt className="link-icon" />
+                      </a>
+                    ))}
+                  </div>,
                   "resources"
-                
+                )}
               </div>
             )}
 
@@ -896,6 +805,7 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
                 {plantInfo.traitements && plantInfo.traitements.length > 0 && (
                   <div className="general-treatments">
                     <h4>Traitements généraux recommandés</h4>
+                    <ul className="treatment-list">{plantInfo.traitements.map((t,i) => <li key={i}>{t}</li>)}</ul>
                   </div>
                 )}
               </div>
@@ -950,3 +860,10 @@ const identifyRes = await fetch('https://garapix-apk.onrender.com/api/identify/p
 };
 
 export default DiagnosticReal;
+
+
+/*cd Garapix-frontend
+npm run build
+npx cap copy
+npx cap sync
+npx cap open android*/

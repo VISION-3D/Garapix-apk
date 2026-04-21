@@ -4,7 +4,11 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
-    "@capacitor/camera": "^8.0.1",
+    "@capacitor/android": "^8.3.0",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/camera": "^8.0.2",
+    "@capacitor/cli": "^8.3.0",
+    "@capacitor/core": "^8.3.0",
     "axios": "^1.13.4",
     "chart.js": "^4.2.1",
     "date-fns": "^4.1.0",

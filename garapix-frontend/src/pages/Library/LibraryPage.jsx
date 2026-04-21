@@ -162,9 +162,7 @@ const LibraryPage = () => {
       <div className="library-header">
         <div className="header-content">
           <h1><FaLeaf /> Bibliothèque des Plantes</h1>
-          <p className="subtitle">
-            Base de connaissances complète sur les plantes cultivées et leurs maladies
-          </p>
+          
         </div>
         
         <div className="statistics-grid">

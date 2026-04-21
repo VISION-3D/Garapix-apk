@@ -220,7 +220,7 @@ navContainer: {
   bottom: 0,
   left: 0,
   right: 0,
-  height: 120,
+  height: 105,
   display: "flex",
   justifyContent: "space-around",
   alignItems: "flex-start", // ← alignement en haut

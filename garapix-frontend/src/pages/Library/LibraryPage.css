@@ -1,523 +1,657 @@
-/* src/pages/Library/LibraryPage.css */
+/* ============================================
+   LibraryPage.css - Version Mobile Premium
+   (Cohérent avec DiagnosticReal.css)
+   ============================================ */
 
-/* ===== Variables ===== */
+/* Variables globales */
 :root {
   --primary: #2e7d32;
-  --primary-light: #4caf50;
   --primary-dark: #1b5e20;
-  --bg: #f8faf8;
-  --text: #2c3e50;
-  --text-light: #5a6b5a;
-  --border: #e0e0e0;
-  --card-bg: #ffffff;
-  --shadow: 0 4px 12px rgba(0, 30, 0, 0.06);
-  --shadow-hover: 0 8px 20px rgba(46, 125, 50, 0.12);
+  --primary-light: #4caf50;
+  --secondary: #ff8c42;
+  --text-dark: #1a2a1f;
+  --text-gray: #5a6b5a;
+  --bg-light: #f5f8f5;
+  --bg-white: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
 }
 
-/* ===== Layout général ===== */
+/* Reset et base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .library-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 15px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text);
-  background: var(--bg);
   min-height: 100vh;
+  background: var(--bg-light);
+  padding: 16px;
+  padding-bottom: 80px;
 }
 
-/* ===== Chargement ===== */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 60vh;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid rgba(46, 125, 50, 0.2);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ===== En-tête ===== */
+/* ==================== EN-TÊTE ==================== */
 .library-header {
-  margin-bottom: 30px;
-}
-
-.header-content {
-  text-align: center;
-  margin-bottom: 25px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  margin-bottom: 20px;
 }
 
 .header-content h1 {
-  font-size: 2.4rem;
-  color: var(--primary-dark);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: 10px;
 }
 
-.subtitle {
-  color: var(--text-light);
-  font-size: 1.1rem;
-}
-
-/* ===== Statistiques ===== */
+/* Statistiques */
 .statistics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-
-
-/* Liste des plantes */
-.plants-list-section {
-  flex: 1 1 350px;
-  min-width: 300px;
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-sm);
+  padding: 2px 2px;
+  text-align: center;
+  transition: all 0.2s ease;
 }
 
-.plants-list-section h2 {
-  font-size: 1.5rem;
-  color: var(--primary-dark);
-  margin-bottom: 20px;
-  padding-left: 8px;
+.stat-card:active {
+  transform: scale(0.98);
 }
 
-.plants-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+.stat-icon {
+  font-size: 1.4rem;
+  color: white;
+  margin-bottom: 6px;
 }
 
-.plant-card {
-  background: var(--card-bg);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.plant-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--primary-light);
-}
-
-.plant-card.active {
-  border: 2px solid var(--primary);
-  box-shadow: 0 8px 20px rgba(46, 125, 50, 0.15);
-}
-
-.plant-card-header {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-  align-items: center;
-}
-
-.plant-icon {
-  font-size: 2rem;
-  color: var(--primary);
-}
-
-.plant-name h3 {
-  font-size: 1.2rem;
-  margin: 0 0 4px;
-  color: var(--primary-dark);
-}
-
-.plant-name .scientific-name {
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--text-light);
+.stat-content h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
   margin: 0;
 }
 
-.plant-card-body .description {
-  color: var(--text);
-  font-size: 0.95rem;
-  line-height: 1.5;
+.stat-content p {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 4px 0 0;
+  font-weight: 500;
+}
+
+/* ==================== RECHERCHE ET FILTRES ==================== */
+.search-filters-section {
+  margin-bottom: 20px;
+}
+
+.search-container {
   margin-bottom: 12px;
 }
 
-.plant-metadata {
+/* Filtres */
+.filters-container {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
 }
 
-.badge {
-  background: rgba(46, 125, 50, 0.1);
-  color: var(--primary-dark);
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
+.filter-group {
+  flex: 1;
+  min-width: 100px;
 }
 
-.plant-diseases .diseases-label {
-  font-size: 0.85rem;
-  color: var(--text-light);
-  margin-bottom: 6px;
+.filter-group label {
+  display: none;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 12px 12px;
+  background: var(--bg-white);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 40px;
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+}
+
+.reset-filters-btn {
+  padding: 12px 16px;
+  background: var(--bg-white);
+  border: 1px solid var(--secondary);
+  border-radius: 40px;
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.reset-filters-btn:active {
+  transform: scale(0.96);
+  background: rgba(255, 140, 66, 0.05);
+}
+
+.results-info {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.results-info p {
+  font-size: 0.75rem;
+  color: var(--text-gray);
+}
+
+/* ==================== LISTE DES PLANTES ==================== */
+.library-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.plants-list-section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.plants-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Carte plante */
+.plant-card {
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.plant-card.active {
+  border-left: 4px solid var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.plant-card:active {
+  transform: scale(0.99);
+}
+
+.plant-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.plant-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(46, 125, 50, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 1.3rem;
+}
+
+.plant-name {
+  flex: 1;
+}
+
+.plant-name h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 2px;
+}
+
+.scientific-name {
+  font-size: 0.7rem;
+  color: var(--text-gray);
+  font-style: italic;
+  margin: 0;
+}
+
+.description {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.plant-metadata {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.badge.family {
+  background: rgba(46, 125, 50, 0.1);
+  color: var(--primary);
+}
+
+.badge.season {
+  background: rgba(255, 140, 66, 0.1);
+  color: var(--secondary);
+}
+
+.diseases-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 6px;
 }
 
 .disease-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  align-items: center;
 }
 
 .disease-tag {
-  background: rgba(244, 67, 54, 0.1);
+  padding: 3px 8px;
+  background: #ffebee;
   color: #c62828;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  border-radius: 15px;
+  font-size: 0.65rem;
   font-weight: 500;
 }
 
 .more-diseases {
-  font-size: 0.8rem;
-  color: var(--text-light);
+  padding: 3px 8px;
+  background: #f0f0f0;
+  color: var(--text-gray);
+  border-radius: 15px;
+  font-size: 0.65rem;
   font-weight: 500;
 }
 
-.no-results {
-  text-align: center;
-  padding: 40px;
-  color: var(--text-light);
-  background: white;
-  border-radius: 16px;
-  grid-column: 1 / -1;
-}
-
-.no-results-icon {
-  font-size: 3rem;
-  color: var(--border);
-  margin-bottom: 15px;
-}
-
-/* Détail de la plante */
+/* ==================== DÉTAIL DE LA PLANTE ==================== */
 .plant-detail-section {
-  flex: 2 1 600px;
-  min-width: 350px;
+  margin-top: 0;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .plant-detail-card {
-  background: var(--card-bg);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
 .plant-detail-header {
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 20px;
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, #f8faf8, var(--bg-white));
+  padding: 20px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .plant-title h2 {
-  font-size: 2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: var(--primary-dark);
-  margin: 0 0 8px;
+  margin: 0 0 4px;
 }
 
 .plant-title .scientific-name {
-  font-size: 1.1rem;
-  font-style: italic;
-  color: var(--text-light);
+  font-size: 0.85rem;
   margin: 0;
 }
 
 .plant-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 15px;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .meta-item {
-  font-size: 0.95rem;
-  color: var(--text);
-  background: rgba(46, 125, 50, 0.05);
+  background: var(--bg-light);
   padding: 6px 12px;
   border-radius: 20px;
+  font-size: 0.7rem;
 }
 
 .meta-item strong {
-  color: var(--primary-dark);
-  margin-right: 5px;
+  color: var(--text-dark);
+  margin-right: 4px;
 }
 
-/* Sections de détail */
+/* Contenu détail */
+.plant-detail-content {
+  padding: 16px;
+}
+
 .detail-section {
-  margin-bottom: 90px;
+  margin-bottom: 24px;
 }
 
 .detail-section h3 {
-  font-size: 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--primary-dark);
-  margin: 0 0 15px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--primary-light);
+  margin-bottom: 12px;
+  padding-left: 8px;
+  border-left: 3px solid var(--primary);
 }
 
 .detail-section h4 {
-  font-size: 1.1rem;
-  color: var(--text);
-  margin: 15px 0 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 12px 0 8px;
+}
+
+.detail-section p {
+  font-size: 0.85rem;
+  color: var(--text-gray);
+  line-height: 1.5;
 }
 
 /* Grilles */
-.characteristics-grid {
+.characteristics-grid,
+.nutrition-grid,
+.harvest-info {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
-.characteristic {
-  background: rgba(46, 125, 50, 0.05);
+.characteristic,
+.nutrition-item,
+.harvest-item {
+  background: var(--bg-light);
+  border-radius: var(--radius-sm);
   padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.characteristic strong {
-  color: var(--primary-dark);
-  display: block;
-  margin-bottom: 4px;
+.characteristic strong,
+.nutrition-item strong,
+.harvest-item strong {
+  font-size: 0.7rem;
+  color: var(--text-gray);
+  font-weight: 500;
 }
 
+.characteristic span,
+.nutrition-item span,
+.harvest-item span {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  text-align: right;
+}
+
+/* Culture */
 .culture-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-  margin-bottom: 15px;
+  background: var(--bg-light);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 12px;
 }
 
 .culture-item {
-  background: rgba(46, 125, 50, 0.05);
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  margin-bottom: 8px;
 }
 
-.entretien-list {
+.culture-item strong {
+  font-size: 0.7rem;
+  color: var(--text-gray);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.culture-item p {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+}
+
+.entretien-list,
+.tips-list,
+.uses-list {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-.entretien-list li {
-  padding: 6px 0 6px 20px;
+.entretien-list li,
+.tips-list li,
+.use-item {
+  padding: 8px 0 8px 20px;
   position: relative;
-  color: var(--text);
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.entretien-list li:before {
+.entretien-list li:last-child,
+.tips-list li:last-child,
+.use-item:last-child {
+  border-bottom: none;
+}
+
+.entretien-list li::before,
+.tips-list li::before,
+.use-item::before {
   content: "•";
   color: var(--primary);
-  font-size: 1.2rem;
   position: absolute;
-  left: 0;
+  left: 4px;
+  font-size: 1rem;
 }
 
 /* Maladies */
 .diseases-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 12px;
 }
 
-/* Traitements */
 .treatments-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .treatment-item {
-  background: rgba(33, 150, 243, 0.1);
-  color: #1565c0;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-/* Récolte */
-.harvest-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-.harvest-item {
-  background: rgba(46, 125, 50, 0.05);
-  padding: 9px 2px;
-  border-radius: 18px;
-  font-size: 0.95rem;
-}
-
-/* Nutrition */
-.nutrition-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
-}
-
-.nutrition-item {
-  background: rgba(46, 125, 50, 0.05);
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-}
-
-/* Utilisations */
-.uses-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.use-item {
-  background: rgba(255, 152, 0, 0.1);
-  color: #f57c00;
+  background: rgba(46, 125, 50, 0.1);
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-/* Conseils */
-.tips-list {
-  list-style: none;
-  padding: 0;
-}
-
-.tips-list li {
-  padding: 6px 0 6px 20px;
-  position: relative;
-  color: var(--text);
-}
-
-.tips-list li:before {
-  content: "✓";
+  font-size: 0.75rem;
   color: var(--primary);
-  position: absolute;
-  left: 0;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 /* Ressources */
 .resources-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .resource-link {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background: rgba(33, 150, 243, 0.05);
-  border-radius: 12px;
+  padding: 12px;
+  background: var(--bg-light);
+  border-radius: var(--radius-sm);
   text-decoration: none;
-  color: inherit;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 
-.resource-link:hover {
-  background: rgba(33, 150, 243, 0.1);
+.resource-link:active {
+  transform: scale(0.98);
+  background: #f0f0f0;
 }
 
 .resource-link svg {
   color: var(--primary);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.resource-link div {
+  flex: 1;
 }
 
 .resource-link strong {
-  color: #1565c0;
   display: block;
-  margin-bottom: 4px;
+  font-size: 0.8rem;
+  color: var(--text-dark);
 }
 
 .resource-type {
+  font-size: 0.65rem;
+  color: var(--text-gray);
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--bg-light);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(46, 125, 50, 0.2);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Aucun résultat */
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.no-results-icon {
+  font-size: 3rem;
+  color: var(--text-gray);
+  margin-bottom: 16px;
+}
+
+.no-results h3 {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.no-results p {
   font-size: 0.8rem;
-  color: var(--text-light);
+  color: var(--text-gray);
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 1024px) {
-  .library-content {
-    flex-direction: column;
+/* ==================== RESPONSIVE ==================== */
+@media (min-width: 600px) {
+  .library-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
   }
-
-  .plants-list-section {
-    order: 2;
-  }
-
-  .plant-detail-section {
-    order: 1;
-  }
-}
-
-@media (max-width: 768px) {
-  .statistics-grid {
+  
+  .characteristics-grid,
+  .nutrition-grid,
+  .harvest-info {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .filters-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filter-group {
-    width: 100%;
-  }
-
-  .reset-filters-btn {
-    width: 100%;
-  }
-
-  .header-content h1 {
-    font-size: 2rem;
-  }
-
-  .plant-meta {
-    flex-direction: column;
-    gap: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .statistics-grid {
-    grid-template-columns: 1fr;
+    gap: 8px;
   }
+  
+  .stat-card {
+    padding: 8px 4px;
+  }
+  
+  .stat-icon {
+    font-size: 1.2rem;
+  }
+  
+  .stat-content h3 {
+    font-size: 1.1rem;
+  }
+  
+  .plant-meta {
+    gap: 6px;
+  }
+  
+  .meta-item {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+  }
+  
+  .plant-detail-header {
+    padding: 16px;
+  }
+  
+  .plant-title h2 {
+    font-size: 1.2rem;
+  }
+}
 
-  .plant-card-header {
-    flex-direction: column;
-    align-items: flex-start;
+/* Support safe area */
+@supports (padding: max(0px)) {
+  .library-page {
+    padding-bottom: max(80px, env(safe-area-inset-bottom));
+    padding-top: max(16px, env(safe-area-inset-top));
   }
 }
